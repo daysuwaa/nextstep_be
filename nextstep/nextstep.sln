@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1706.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nextstep", "nextstep.csproj", "{30A97961-6808-4F89-9A47-56F33A31FEAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30A97961-6808-4F89-9A47-56F33A31FEAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A97961-6808-4F89-9A47-56F33A31FEAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A97961-6808-4F89-9A47-56F33A31FEAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A97961-6808-4F89-9A47-56F33A31FEAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D30D9E8-68F5-4D80-9229-4D58396C4A85}
+	EndGlobalSection
+EndGlobal
