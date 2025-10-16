@@ -22,13 +22,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
-
-builder.Configuration
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddEnvironmentVariables();
-builder.Services.Configure<nextstep.application.Configurations.Cloudinary>(builder.Configuration.GetSection(nameof(Cloudinary)));
-
 //  CORS 
 builder.Services.AddCors(options =>
 {
