@@ -23,11 +23,7 @@ Env.Load("../.env");
 builder.Configuration.AddEnvironmentVariables();
 
 var config = builder.Configuration;
-Console.WriteLine("Cloud name: " + Environment.GetEnvironmentVariable("CLOUDINARY_CLOUDNAME"));
 
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-//);
 
 var dbConnection = Environment.GetEnvironmentVariable("DB_CONNECTION")
     ?? throw new Exception("DB_CONNECTION not found in environment variables");
@@ -42,24 +38,21 @@ builder.Services.Configure<nextstep.application.Configurations.CloudinarySetting
 //  CORS 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowNextJs", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("https://nextstep-fe.onrender.com")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.WithOrigins(
+            "https://nextstep-fe.onrender.com",
+            "http://localhost:3000",
+            "https://localhost:3000"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 });
 
 // configure Cloudinary account and register Cloudinary client
 var cloudConfig = builder.Configuration.GetSection("Cloudinary");
-
-//var account = new Account(
-//    Environment.GetEnvironmentVariable("CLOUDINARY_CLOUDNAME"),
-//    Environment.GetEnvironmentVariable("CLOUDINARY_APIKEY"),
-//    Environment.GetEnvironmentVariable("CLOUDINARY_APISECRET")
-//);
-//builder.Services.AddSingleton(new Cloudinary(account));
 
 var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME");
 var apiKey = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY");
@@ -80,11 +73,6 @@ builder.Services.AddScoped<IUserHandler, UserHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginReqValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
 
-//builder.Services.AddControllers(options =>
-//{
-//    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-//    options.Filters.Clear(); // remove automatic antiforgery filters
-//});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -117,10 +105,11 @@ builder.Services.AddControllers(options =>
 var app = builder.Build();
 
 app.UseCors("AllowNextJs");
+app.UseCors("AllowFrontend");
 
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
+app.UseSwagger();
     app.UseSwaggerUI();
 //}
 
