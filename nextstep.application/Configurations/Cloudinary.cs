@@ -1,6 +1,6 @@
 ﻿namespace nextstep.application.Configurations
 {
-    public class Cloudinary
+    public class CloudinarySettings
     {
         public required string CloudName { get; set; }
         public required string ApiKey { get; set; }

@@ -1,6 +1,6 @@
 ﻿using nextstep.Endpoints.AuthenticationEndpoints;
 using nextstep.Endpoints.EntriesEndpoints;
-using nextstep.Endpoints.UserEndpoints;
+//using nextstep.Endpoints.UserEndpoints;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using nextstep.Models.Requests;
@@ -16,15 +16,28 @@ using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+Env.Load("../.env");
+builder.Configuration.AddEnvironmentVariables();
+
+var config = builder.Configuration;
+Console.WriteLine("Cloud name: " + Environment.GetEnvironmentVariable("CLOUDINARY_CLOUDNAME"));
+
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+//);
+
+var dbConnection = Environment.GetEnvironmentVariable("DB_CONNECTION")
+    ?? throw new Exception("DB_CONNECTION not found in environment variables");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseNpgsql(dbConnection)
 );
 
 
-builder.Services.Configure<nextstep.application.Configurations.Cloudinary>(builder.Configuration.GetSection(nameof(Cloudinary)));
+builder.Services.Configure<nextstep.application.Configurations.CloudinarySettings>(builder.Configuration.GetSection(nameof(Cloudinary)));
 
 //  CORS 
 builder.Services.AddCors(options =>
@@ -40,13 +53,22 @@ builder.Services.AddCors(options =>
 
 // configure Cloudinary account and register Cloudinary client
 var cloudConfig = builder.Configuration.GetSection("Cloudinary");
-var account = new Account(
-    cloudConfig["CloudName"],
-    cloudConfig["ApiKey"],
-    cloudConfig["ApiSecret"]
-);
 
-builder.Services.AddSingleton(new Cloudinary(account));
+//var account = new Account(
+//    Environment.GetEnvironmentVariable("CLOUDINARY_CLOUDNAME"),
+//    Environment.GetEnvironmentVariable("CLOUDINARY_APIKEY"),
+//    Environment.GetEnvironmentVariable("CLOUDINARY_APISECRET")
+//);
+//builder.Services.AddSingleton(new Cloudinary(account));
+
+var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME");
+var apiKey = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY");
+var apiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET");
+
+Console.WriteLine($"Cloud name: {cloudName}");
+
+var account = new Account(cloudName, apiKey, apiSecret);
+builder.Services.AddSingleton(new CloudinaryDotNet.Cloudinary(account));
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthHandler, AuthHandler>();
@@ -74,7 +96,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY") ?? throw new Exception("JWT_KEY not found in environment variables"))
+            )
         };
     });
 
@@ -109,7 +132,7 @@ app.UseAuthorization();
 
 app.AddEntriesEndpoints();
 app.AddAuthenticationEndpoint();
-app.AddUserEndpoint();
+//app.AddUserEndpoint();
 
 app.Run();
 

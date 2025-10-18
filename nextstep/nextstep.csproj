@@ -33,12 +33,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Antiforgery" Version="2.3.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.27.8" />
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Endpoints\" />
     <None Remove="Endpoints\AuthenticationEndpoints\" />
-    <None Remove="Endpoints\UserEndpoints\" />
     <None Remove="Endpoints\EntriesEndpoints\" />
     <None Remove="Models\" />
     <None Remove="Models\Requests\" />
@@ -47,7 +47,6 @@
   <ItemGroup>
     <Folder Include="Endpoints\" />
     <Folder Include="Endpoints\AuthenticationEndpoints\" />
-    <Folder Include="Endpoints\UserEndpoints\" />
     <Folder Include="Endpoints\EntriesEndpoints\" />
     <Folder Include="Models\" />
     <Folder Include="Models\Requests\" />

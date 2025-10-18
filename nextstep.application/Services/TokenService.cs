@@ -17,8 +17,8 @@ namespace nextstep.application.Services
 
         public TokenService(IConfiguration config)
         {
-            var secret = config["Jwt:Key"];
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+            var secret = Environment.GetEnvironmentVariable("JWT_KEY");
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY") ?? throw new Exception("JWT Key not found")));
         }
 
         // a public method called GenerateToken with return type as token

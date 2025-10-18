@@ -40,9 +40,13 @@ namespace nextstep.Endpoints.EntriesEndpoints
             // GET the cloudinary signed signature
             app.MapGet("api/v1/cloudinary-signature", ([FromServices] IConfiguration config) =>
             {
-                var cloudName = config["Cloudinary:CloudName"];
-                var apiKey = config["Cloudinary:ApiKey"];
-                var apiSecret = config["Cloudinary:ApiSecret"];
+                //var cloudName = config["Cloudinary:CloudName"];
+                //var apiKey = config["Cloudinary:ApiKey"];
+                //var apiSecret = config["Cloudinary:ApiSecret"];
+
+                var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUDNAME");
+                var apiKey = Environment.GetEnvironmentVariable("CLOUDINARY_APIKEY");
+                var apiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_APISECRET");
 
                 // Generate a timestamp
                 var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
