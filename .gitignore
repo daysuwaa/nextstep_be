@@ -409,4 +409,6 @@ ASALocalRun/
 
 .env
 
+.backup.sql
+
 .env
