@@ -54,9 +54,9 @@ builder.Services.AddCors(options =>
 // configure Cloudinary account and register Cloudinary client
 var cloudConfig = builder.Configuration.GetSection("Cloudinary");
 
-var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME");
-var apiKey = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY");
-var apiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET");
+var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUDNAME");
+var apiKey = Environment.GetEnvironmentVariable("CLOUDINARY_APIKEY");
+var apiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_APISECRET");
 
 Console.WriteLine($"Cloud name: {cloudName}");
 
