@@ -412,3 +412,6 @@ ASALocalRun/
 .backup.sql
 
 .env
+
+*.sql
+*.bak
